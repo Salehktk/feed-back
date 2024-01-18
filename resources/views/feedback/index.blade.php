@@ -8,7 +8,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
     <!-- Styles -->
     <style>
         body {
@@ -201,6 +201,14 @@
                 <p>{{ $feedback->description }}</p>
 
                 <div class="comments mt-4" style="display: none;">
+                    <div class="comment-form {{ (auth()->check() ? '' : 'd-none')}}">
+                        <form method="post" action="{{ route('comment.store', ['feedback' => $feedback->id]) }}">
+                            @csrf
+                            <textarea name="content" placeholder="Add a comment" rows="3" required></textarea>
+                            <button type="submit">Post Comment</button>
+                        </form>
+                    </div>
+                    <p class="{{ (auth()->check() ? 'd-none' : '')}}">Please <a class= "comment-icon" href="{{ route('login') }}">log in</a> to add a comment.</p>
                     @foreach($feedback->comments as $comment)
                         <div class="comment">
                             <div class="user-icon">{{ substr($comment->user->name, 0, 1) }}</div>
@@ -213,15 +221,10 @@
                     @endforeach
                 </div>
 
-                <div class="comment-form {{ (auth()->check() ? '' : 'd-none')}}">
-                    <form method="post" action="{{ route('comment.store', ['feedback' => $feedback->id]) }}">
-                        @csrf
-                        <textarea name="content" placeholder="Add a comment" rows="3" required></textarea>
-                        <button type="submit">Post Comment</button>
-                    </form>
-                </div>
-                <p class="{{ (auth()->check() ? 'd-none' : '')}}">Please <a class= "comment-icon" href="{{ route('login') }}">log in</a> to add a comment.</p>
-                <p class="comment-icon" onclick="toggleComments(this)">click to see comments</p>
+                
+                <p class="comment-icon" onclick="toggleComments(this)">
+                    <i class="fa fa-comment"></i> Comments
+                </p>
             </div>
         @endforeach
     </div>

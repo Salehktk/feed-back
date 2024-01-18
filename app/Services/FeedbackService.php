@@ -9,7 +9,7 @@ class FeedbackService
 
     public function getAllFeedback()
     {
-        return Feedback::latest()->get();
+        return Feedback::latest()->paginate(5);
     }
     public function submitFeedback($userId, $title, $description, $category)
     {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('feedback_id')->nullable();
             $table->foreign('feedback_id')->references('id')->on('feedback')->onDelete('cascade')->onUpdate('cascade');
             $table->text('comment');
+            $table->json('mentioned_users')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });

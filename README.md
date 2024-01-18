@@ -22,7 +22,3 @@ The Feedback Tool is designed to facilitate the process of submitting, viewing, 
    php artisan cache:clear
    php artisan config:clear
    php artisan serve
-
-   
-   
-

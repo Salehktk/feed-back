@@ -14,7 +14,7 @@ class FeedbackSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::limit(3)->get();
+        $users = User::limit(6)->get();
     
         foreach ($users as $user) {
             Feedback::updateOrCreate([

@@ -40,6 +40,6 @@ class FeedbackController extends Controller
             $request->category
         );
 
-        return redirect()->route('feedback.create')->with('success', 'Feedback submitted successfully!');
+        return redirect()->route('home')->with('success', 'Feedback submitted successfully!');
     }
 }

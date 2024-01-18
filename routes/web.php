@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,4 +31,5 @@ Route::middleware('auth')->group(function () {
 Route::get('/feedback/create', [FeedbackController::class, 'createForm'])->middleware(['auth'])->name('feedback.create');
 Route::post('/feedback', [FeedbackController::class, 'store'])->middleware(['auth'])->name('feedback.store');
 
+Route::post('/comments/{feedback}', [CommentController::class, 'store'])->name('comment.store');
 require __DIR__.'/auth.php';

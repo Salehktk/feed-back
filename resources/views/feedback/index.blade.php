@@ -48,22 +48,31 @@
 
         .comment {
             margin-top: 15px;
-            padding: 10px;
+            padding: 15px;
             background-color: #f7f7f7;
-            border-radius: 5px;
+            border-radius: 12px;
+            display: flex;
+            align-items: flex-start;
         }
 
-        .comment .avatar {
-            width: 30px;
-            height: 30px;
+        .comment .user-icon {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            margin-right: 10px;
-            object-fit: cover;
+            background-color: #3498db;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
         }
 
         .comment-content {
-            display: flex;
-            align-items: flex-start;
+            flex-grow: 1;
+        }
+
+        .comment-content p {
+            margin: 0;
         }
 
         .feedback-link {
@@ -114,6 +123,9 @@
             padding: 10px;
             box-sizing: border-box;
             margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical; /* Allow vertical resizing */
         }
 
         .comment-form button {
@@ -132,9 +144,42 @@
 
         .comment-icon {
             cursor: pointer;
-            font-size: 20px;
+            
             color: #3498db;
-            margin-right: 5px;
+     
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .user-info .user-name {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info .user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+
+        .user-info strong {
+            font-size: 18px;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: #555;
         }
     </style>
 </head>
@@ -145,39 +190,45 @@
 
         @foreach($feedbacks as $feedback)
             <div class="card">
+                <div class="user-info">
+                    <div class="user-name">
+                        <div class="user-icon">{{ substr($feedback->user->name, 0, 1) }}</div>
+                        <strong>{{ $feedback->user->name }}</strong>
+                    </div>
+                    <p class="comment-date">{{ $feedback->created_at->format('F d, Y \a\t h:i A') }}</p>
+                </div>
                 <div class="feedback-title">{{ $feedback->title }}</div>
                 <p>{{ $feedback->description }}</p>
 
-                <div class="comments mt-4">
-                    <div class="feedback-title">Comments</div>
-                    <div class="comment-icon" onclick="toggleComments(this)">▼</div>
+                <div class="comments mt-4" style="display: none;">
                     @foreach($feedback->comments as $comment)
                         <div class="comment">
+                            <div class="user-icon">{{ substr($comment->user->name, 0, 1) }}</div>
                             <div class="comment-content">
-                                <img src="user-avatar.jpg" alt="User Avatar" class="avatar">
-                                <div>
-                                    <strong>{{ $comment->user->name }}</strong>
-                                    <p>{{ $comment->content }}</p>
-                                </div>
+                                <strong>{{ $comment->user->name }}</strong>
+                                <small class="comment-date">{{ $comment->created_at->format('F d, Y \a\t h:i A') }}</small>
+                                <p>{{ $comment->comment }}</p>
                             </div>
                         </div>
                     @endforeach
                 </div>
 
-                <div class="comment-form">
-                    <form method="post" action="">
+                <div class="comment-form {{ (auth()->check() ? '' : 'd-none')}}">
+                    <form method="post" action="{{ route('comment.store', ['feedback' => $feedback->id]) }}">
                         @csrf
                         <textarea name="content" placeholder="Add a comment" rows="3" required></textarea>
                         <button type="submit">Post Comment</button>
                     </form>
                 </div>
+                <p class="{{ (auth()->check() ? 'd-none' : '')}}">Please <a class= "comment-icon" href="{{ route('login') }}">log in</a> to add a comment.</p>
+                <p class="comment-icon" onclick="toggleComments(this)">click to see comments</p>
             </div>
         @endforeach
     </div>
 
     <script>
         function toggleComments(icon) {
-            const commentsContainer = icon.nextElementSibling;
+            const commentsContainer = icon.parentElement.querySelector('.comments');
             commentsContainer.style.display = (commentsContainer.style.display === 'none' || commentsContainer.style.display === '') ? 'block' : 'none';
         }
     </script>

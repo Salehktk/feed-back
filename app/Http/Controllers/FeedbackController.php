@@ -14,6 +14,12 @@ class FeedbackController extends Controller
         $this->feedbackService = $feedbackService;
     }
 
+    public function index()
+    {
+        $feedbacks = $this->feedbackService->getAllFeedback();
+        return view('feedback.index', compact('feedbacks'));
+    }
+
     public function createForm()
     {
         return view('feedback.create');

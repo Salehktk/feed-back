@@ -41,7 +41,7 @@
 
             
         </div>
-    </form>
+   
 
     <!-- New Registration Link -->
     <div class="mt-4 text-sm text-gray-600 dark:text-gray-400">
@@ -54,5 +54,5 @@
             {{ __('Log in') }}
         </x-primary-button> 
     </div>
-
+</form>
 </x-guest-layout>
